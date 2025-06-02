@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Cuotas</title>
+  <style>
+    body { font-family: Arial; padding: 30px; background: #f3f3f3; }
+    .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+    input, button { padding: 10px; width: 100%; margin-top: 10px; }
+    #resultado { margin-top: 20px; background: #e6ffe6; padding: 15px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Consulta de Cuotas</h2>
+    <p>Ingresa tu cédula:</p>
+    <input type="text" id="cedula" placeholder="Ej: 1234567">
+    <button onclick="consultarCuotas()">Consultar</button>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    const baseDeDatos = {
+      "1234567": {
+        nombre: "Carlos López",
+        cuotas: [
+          { nro: 1, monto: "₲200.000", vencimiento: "2025-06-15", estado: "Pendiente" },
+          { nro: 2, monto: "₲200.000", vencimiento: "2025-07-15", estado: "Pendiente" }
+        ]
+      },
+      "9876543": {
+        nombre: "Ana Gómez",
+        cuotas: [
+          { nro: 1, monto: "₲150.000", vencimiento: "2025-06-10", estado: "Pagado" },
+          { nro: 2, monto: "₲150.000", vencimiento: "2025-07-10", estado: "Pendiente" }
+        ]
+      }
+    };
+
+    function consultarCuotas() {
+      const cedula = document.getElementById("cedula").value.trim();
+      const cliente = baseDeDatos[cedula];
+      const resultado = document.getElementById("resultado");
+      
+      if (!cliente) {
+        resultado.innerHTML = "<strong>No se encontraron datos para esta cédula.</strong>";
+        return;
+      }
+
+      let html = `<strong>Cliente:</strong> ${cliente.nombre}<br><ul>`;
+      cliente.cuotas.forEach(cuota => {
+        html += `<li>Cuota ${cuota.nro}: ${cuota.monto} - Vence: ${cuota.vencimiento} - Estado: ${cuota.estado}</li>`;
+      });
+      html += "</ul>";
+      resultado.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
